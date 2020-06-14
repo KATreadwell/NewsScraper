@@ -1,7 +1,31 @@
 <h1>Mongo Scraper</h1>
-<h2>For The Onion</h2>
+<h2>NY Times Opinion: Technology</h2>
 
-<div class="articles">
-  
-</div>
+<div id="articles">
+  <div class="row">
+    <div class="col-4">
+      <h2>All the Articles fit to be scraped!</h2>
+
+
+      <ul>
+        {{#each Articles}}
+          <li>{{title}} {{summary}} {{link}}</li>
+        {{/each}}
+      </ul>
+    </div>
+
+
+    {{!-- <div class="col4">
+      <h2>Saved Articles</h2>
+      <ul>
+        {{#each article}}
+        {{#if devoured}}
+        {{> burgers/burger-devoured devoured=true}}
+        {{/if}}
+        {{/each}}
+      </ul>
+    </div>
+  </div> --}}
+
+
 
