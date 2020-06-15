@@ -9,7 +9,6 @@ const db = require("./models");
 const _handlebars = require("handlebars");
 const handlebars = require("express-handlebars");
 const {allowInsecurePrototypeAccess} = require("@handlebars/allow-prototype-access");
-const path = require("path")
 
 const MONGODB_URI = process.env.MONGODB_URI
 
@@ -79,7 +78,7 @@ app.get("/scrape", function(req, res) {
 });
 
 
-
+// All articles scrapped
 app.get("/articles", function(req, res) {
     db.Article.find({})
       .then(function(dbArticles){
@@ -93,7 +92,7 @@ app.get("/articles", function(req, res) {
     });
 });
 
-
+//Saved Articles
 app.get("/savedArticles/:id", function(req, res) {
   db.Article.findOne({ _id: req.params.id })
     .then(function(dbArticle) {
@@ -104,21 +103,34 @@ app.get("/savedArticles/:id", function(req, res) {
     });
 });
 
-// Route for saving/unsaving an Article
+//to save articles
 app.post("/articles/:id", function(req, res) {
   db.Article.update(req.body)
     .then(function(saveArticle) {
       return db.Article.update({ _id: req.params.id }, { saved: true});
     })
     .then(function(dbArticle) {
-      // If we were able to successfully update an Article, send it back to the client
       res.json(dbArticle);
     })
     .catch(function(err) {
-      // If an error occurred, send it to the client
       res.json(err);
     });
 });
+
+//to clear articles
+app.post("/articles/:id", function(req, res) {
+  db.Article.update(req.body)
+    .then(function(saveArticle) {
+      return db.Article.update({ _id: req.params.id }, { saved: true});
+    })
+    .then(function(dbArticle) {
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
+
 
 app.listen(PORT, function() {
   console.log("App running on http://localhost:" + PORT);
