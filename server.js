@@ -32,6 +32,20 @@ app.engine("handlebars", handlebars({
   handlebars: allowInsecurePrototypeAccess(_handlebars)
 }));
 
+//Homepage & Clear Articles
+app.get("/", function(req, res){
+  db.Article.find({})
+  .then(function(dbArticles){
+      res.render("index", {
+          dbArticles
+      }) 
+  })
+  .catch(function(err){
+      res.json(err);
+  })
+}) 
+
+//Scrape New Articles
 app.get("/scrape", function(req, res) {
   axios.get("https://www.nytimes.com/section/opinion/technology").then(function(response) {
     let $ = cheerio.load(response.data);
@@ -64,17 +78,7 @@ app.get("/scrape", function(req, res) {
   }); 
 });
 
-app.get("/", function(req, res){
-    db.Article.find({})
-    .then(function(dbArticles){
-        res.render("index", {
-            dbArticles
-        }) 
-    })
-    .catch(function(err){
-        res.json(err);
-    })
-}) 
+
 
 app.get("/articles", function(req, res) {
     db.Article.find({})

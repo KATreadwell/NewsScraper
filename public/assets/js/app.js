@@ -1,5 +1,5 @@
 $.getJSON("/articles", function (data) {
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>" + data[i].summary);
     }
 });
@@ -15,11 +15,5 @@ $(document).on("click", "#saveArticle", function () {
     $.ajax({
         method: "POST",
         url: "/articles/" + thisId,
-        data: {
-            // Value taken from title input
-            title: $("#titleinput").val(),
-            // Value taken from note textarea
-            body: $("#bodyinput").val()
-        }
     })
 });
