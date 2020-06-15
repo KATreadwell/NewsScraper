@@ -1,41 +1,44 @@
-var express = require("express");
-var logger = require("morgan");
-var mongoose = require("mongoose");
-var axios = require("axios");
-var cheerio = require("cheerio");
-var db = require("./models");
-const _handlebars = require('handlebars');
-const handlebars = require('express-handlebars');
-const {allowInsecurePrototypeAccess}=require('@handlebars/allow-prototype-access');
 require("dotenv").config()
 
-var MONGODB_URI = process.env.MONGODB_URI
+const express = require("express");
+const logger = require("morgan");
+const mongoose = require("mongoose");
+const axios = require("axios");
+const cheerio = require("cheerio");
+const db = require("./models");
+const _handlebars = require("handlebars");
+const handlebars = require("express-handlebars");
+const {allowInsecurePrototypeAccess} = require("@handlebars/allow-prototype-access");
+const path = require("path")
+
+const MONGODB_URI = process.env.MONGODB_URI
 
 mongoose.connect(MONGODB_URI);
 
-var PORT = 3000;
+const PORT = 3000;
 
-var app = express();
+const app = express();
 app.use(logger("dev"));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(express.static("public"));
+app.use(express.static(__dirname + "public"));
+app.use(express.static("."))
 
-app.set('view engine','handlebars');
-app.engine('handlebars', handlebars({
-  layoutDirs: __dirname+'/views/layouts',
+app.set("view engine","handlebars");
+app.engine("handlebars", handlebars({
+  layoutDirs: __dirname+"/views/layouts",
   handlebars: allowInsecurePrototypeAccess(_handlebars)
 }));
 
 app.get("/scrape", function(req, res) {
   axios.get("https://www.nytimes.com/section/opinion/technology").then(function(response) {
-    var $ = cheerio.load(response.data);
-    var articleArray = [];
+    let $ = cheerio.load(response.data);
+    let articleArray = [];
 
     $(".css-ye6x8s").each(function(i, element) {
-      var result = {};
+      let result = {};
       result.title = $(this)
         .find("h2")
         .text();
