@@ -31,18 +31,18 @@ app.engine("handlebars", handlebars({
   handlebars: allowInsecurePrototypeAccess(_handlebars)
 }));
 
-//Homepage & Clear Articles
-app.get("/", function(req, res){
-  db.Article.find({})
-  .then(function(dbArticles){
-      res.render("index", {
-          dbArticles
-      }) 
-  })
-  .catch(function(err){
-      res.json(err);
-  })
-}) 
+//Homepage 
+// app.get("/", function(req, res){
+//   console.log('its working')
+//   db.Article.find({})
+//   .then(function(dbArticle) {
+//     // If we were able to successfully find Articles, send them back to the client
+//     res.json(dbArticle);
+//   })
+//   .catch(function(err){
+//       res.json(err);
+//   })
+// }) 
 
 //Scrape New Articles
 app.get("/scrape", function(req, res) {
@@ -79,7 +79,7 @@ app.get("/scrape", function(req, res) {
 
 
 // All articles scrapped
-app.get("/articles", function(req, res) {
+app.get("/", function(req, res) {
     db.Article.find({})
       .then(function(dbArticles){
         
@@ -92,11 +92,27 @@ app.get("/articles", function(req, res) {
     });
 });
 
+// All articles scrapped
+app.get("/clearArticles", function(req, res) {
+  db.Article.deleteMany({})
+    .then(function(dbArticles){
+      
+      res.render("index", {
+        Articles: dbArticles,
+      }) 
+  })
+  .catch(function(err) {
+    res.json(err);
+  });
+});
+
 //Saved Articles
-app.get("/savedArticles/:id", function(req, res) {
-  db.Article.findOne({ _id: req.params.id })
+app.get("/savedArticles", function(req, res) {
+  db.Article.findOne({ _id: req.params.id,  saved: true })
     .then(function(dbArticle) {
-      res.json(dbArticle);
+      res.render("partials/saved-articles", {
+        Articles: dbArticle,
+      }) 
     })
     .catch(function(err) {
       res.json(err);
