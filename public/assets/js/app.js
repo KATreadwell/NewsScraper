@@ -9,13 +9,12 @@ $(document).ready(function () {
                     if (data) {
                         Swal.fire({
                             title: 'Good job!',
-                            text: 'Articles Scrapped Successfully!',
+                            text: 'Articles Scrapped Successfully! Go to Home Page',
                             icon: 'success'
                         }).then((result) => {
                             location.reload();
                         })
                     }
-
                 }
             }
         })
@@ -58,7 +57,6 @@ $(document).ready(function () {
                             location.reload();
                         })
                     }
-
                 }
             }
         })
