@@ -95,10 +95,11 @@ app.get("/clearArticles", function (req, res) {
 
 //Saved Articles
 app.get("/savedArticles", function (req, res) {
-  db.Article.findOne({ _id: req.params.id, saved: true })
-    .then(function (dbArticle) {
-      res.render("partials/saved-articles", {
-        Articles: dbArticle,
+  db.Article.find({saved: true })
+    .then(function (dbArticles) {
+      console.log(dbArticles)
+      res.render("saved-articles", {
+        Articles: dbArticles,
       })
     })
     .catch(function (err) {
@@ -107,18 +108,18 @@ app.get("/savedArticles", function (req, res) {
 });
 
 //to save articles
-// app.post("/articles/:id", function(req, res) {
-//   db.Article.update(req.body)
-//     .then(function(saveArticle) {
-//       return db.Article.update({ _id: req.params.id }, { saved: true});
-//     })
-//     .then(function(dbArticle) {
-//       res.json(dbArticle);
-//     })
-//     .catch(function(err) {
-//       res.json(err);
-//     });
-// });
+app.post("/savedArticles/:id", function(req, res) {
+  db.Article.update(req.body)
+    .then(function(saveArticle) {
+      return db.Article.update({ _id: req.params.id }, { saved: true});
+    })
+    .then(function(dbArticle) {
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
 
 
 app.listen(PORT, function () {

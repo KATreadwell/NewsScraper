@@ -28,7 +28,7 @@ $(document).ready(function () {
 
         $.ajax({
             method: "POST",
-            url: "/articles/" + thisId,
+            url: "/savedArticles/" + thisId,
         })
     });
 
