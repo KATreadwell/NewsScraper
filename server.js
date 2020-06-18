@@ -64,7 +64,6 @@ app.get("/scrape", function (req, res) {
   });
 });
 
-
 //Homepage
 app.get("/", function (req, res) {
   db.Article.find({})
@@ -93,7 +92,7 @@ app.get("/clearArticles", function (req, res) {
     });
 });
 
-//Saved Articles
+//Saved Articles 
 app.get("/savedArticles", function (req, res) {
   db.Article.find({saved: true })
     .then(function (dbArticles) {
@@ -107,7 +106,21 @@ app.get("/savedArticles", function (req, res) {
     });
 });
 
-//to save articles
+//Saved Articles with their notes
+app.get("/savedArticles", function (req, res) {
+  db.Article.findOne({_id: req.params.id}, {saved: true })
+  .populate("note")
+    .then(function (dbArticles) {
+      res.render("saved-articles", {
+        Articles: dbArticles,
+      })
+    })
+    .catch(function (err) {
+      res.json(err);
+    });
+});
+
+//to save articles 
 app.post("/savedArticles/:id", function(req, res) {
   db.Article.update(req.body)
     .then(function(saveArticle) {
@@ -121,6 +134,19 @@ app.post("/savedArticles/:id", function(req, res) {
     });
 });
 
+//to make notes
+app.post("/articles/:id", function(req, res){
+  db.Note.create(req.body)
+  .then(function(dbNote) {
+    return db.Article.findOneAndUpdate({_id: req.params.id}, {note: dbNote._id}, {new: true});
+  })
+  .then(function(dbArticle){
+    res.json(dbArticle);
+  })
+  .catch(function(err){
+    res.json(err);
+  });
+});
 
 app.listen(PORT, function () {
   console.log("App running on http://localhost:" + PORT);

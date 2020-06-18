@@ -9,7 +9,7 @@ $(document).ready(function () {
                     if (data) {
                         Swal.fire({
                             title: 'Good job!',
-                            text: 'Articles Scrapped Successfully! Go to Home Page',
+                            text: 'Articles Scrapped Successfully!',
                             icon: 'success'
                         }).then((result) => {
                             location.reload();
@@ -20,7 +20,6 @@ $(document).ready(function () {
         })
     })
 
-
     // To Save Article
     $(document).on("click", "#saveArticle", function () {
         let thisId = $(this).attr("data-id");
@@ -30,6 +29,7 @@ $(document).ready(function () {
             url: "/savedArticles/" + thisId,
         })
     });
+
 
     // Saved Articles
     $(document).on("click", "#savedArticles", function () {
@@ -61,4 +61,51 @@ $(document).ready(function () {
             }
         })
     });
+
+    //Notes Mess
+    $(document).on("click", "#makeNotes", function () {
+        $("#notes").empty();
+        let thisId = $(this).attr("data-id");
+        $.ajax({
+            method: "GET",
+            url: "/articles/" + thisId,
+            success: function (data) {
+            console.log(data);
+            $("#notes").append("<h2>" + data.title + "</h2>");
+            $("#notes").append("<input id='titleinput' name='title' >");
+            $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
+            $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
+                if (data) {
+                    if (data) {
+                        Swal.mixin({
+                            input: 'text',
+                            confirmButtonText: 'Next &rarr;',
+                            showCancelButton: true,
+                            // progressSteps: ['1', '2', '3']
+                          }).queue([
+                            {
+                              title: 'Title',
+                              text: 'Title'
+                            },
+                            'Body',
+                          ]).then((result) => {
+                            if (result.value) {
+                              const body = JSON.stringify(result.value)
+                              Swal.fire({
+                                title: 'Hope these notes were worth it!',
+                                html: `
+                                  Your notes:
+                                  <pre><code>${title}</code></pre>
+                                  <pre><code>${answers}</code></pre>
+                                `,
+                                confirmButtonText: 'Lovely!'
+                              })
+                            }
+                          })
+                    }
+                }
+            }
+        })
+    })
+    $(document).on("click", #)
 })

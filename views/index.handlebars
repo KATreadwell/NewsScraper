@@ -13,17 +13,20 @@
     <div class="card-header">
       <ul>
         {{#each Articles}}
-        <li>{{title}}
-          <br>
+        <div class="card-header">
+          <h3>
+            <a class="article-link" targer="_blank" rel="noopener noreferrer" href={{link}}>{{title}}</a>
+          </h3>
+        </div>
+        <div class="card-body">
           {{summary}}
-          <br>
-          {{link}}</li>
-        <a class="btn btn-success save" id="saveArticle" data-id="{{_id}}">Save Article</a>
+          <div class="card-footer">
+            <a class="btn btn-success save" id="saveArticle" data-id="{{_id}}">Save Article</a>
+            <a class="btn btn-primary save" id="makeNotes" data-id="{{_id}}">Make Notes</a>
+          </div>
+        </div>
         {{/each}}
       </ul>
     </div>
   </div>
 </div>
-
-
- 
