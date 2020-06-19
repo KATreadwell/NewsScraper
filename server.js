@@ -14,7 +14,7 @@ const MONGODB_URI = process.env.MONGODB_URI
 
 mongoose.connect(MONGODB_URI);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 const app = express();
 app.use(logger("dev"));
@@ -28,6 +28,7 @@ app.use(express.static("."))
 app.set("view engine", "handlebars");
 app.engine("handlebars", handlebars({
   layoutDirs: __dirname + "/views/layouts",
+  partialsDir:__dirname + "/views/partial",
   handlebars: allowInsecurePrototypeAccess(_handlebars)
 }));
 
