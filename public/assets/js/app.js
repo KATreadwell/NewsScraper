@@ -20,6 +20,25 @@ $(document).ready(function () {
         })
     })
 
+    // To Make Note
+    $(document).on("click", "#saveNote", function(){
+        let thisId = $(this).attr("data-id");
+        console.log(thisId)
+        let note = {
+            title: $(".noteTitle").val(),
+            body: $(".noteBody").val()
+        }
+
+        $.ajax({
+            method: "POST",
+            url: "/note/" + thisId,
+            data: note,
+        }).then(()=>{
+            $("textarea").val("")
+            $("input").val("")
+        })
+    })
+
     // To Save Article
     $(document).on("click", "#saveArticle", function () {
         let thisId = $(this).attr("data-id");
