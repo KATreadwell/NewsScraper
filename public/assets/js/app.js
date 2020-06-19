@@ -20,13 +20,20 @@ $(document).ready(function () {
         })
     })
 
-    // To Make Note
+    // to Make Note
+    $(document).on("click", "#makeNotes", function(){
+        console.log($(this).attr("data-id"))
+        $("#saveNote").attr("data-id", $(this).attr("data-id"))
+    });
+
+    // To Save Note
     $(document).on("click", "#saveNote", function(){
         let thisId = $(this).attr("data-id");
-        console.log(thisId)
+        console.log($(this).attr("data-id"))
         let note = {
             title: $(".noteTitle").val(),
-            body: $(".noteBody").val()
+            body: $(".noteBody").val(),
+            articleId: thisId
         }
 
         $.ajax({
