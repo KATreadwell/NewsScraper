@@ -138,11 +138,8 @@ app.post("/savedArticles/:id", function(req, res) {
 //to read notes
 app.get("/note/:id", function(req, res){
   console.log('request params', req.params)
-  db.Article.create(req.body)
-  .then(function(dbNote) {
-    return db.Article
-    .findOne({_id: req.params.id}, {note: dbNote._id});
-  })
+  db.Article.findOne({_id: req.params.id}, {saved: true })
+  .populate("note")
   .then(function(dbArticle){
     console.log('read note for client', dbArticle);
     res.json(dbArticle);
@@ -159,7 +156,7 @@ app.post("/note/:id", function(req, res){
   console.log(req.body)
   db.Note.create(req.body)
   .then(function(dbNote) {
-    return db.Article.findOne({_id: req.params.id}, {note: dbNote._id});
+    return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
   })
   .then(function(dbArticle){
     console.log('article data',dbArticle)

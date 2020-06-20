@@ -21,13 +21,13 @@ $(document).ready(function () {
     })
 
     // to Make Note
-    $(document).on("click", "#makeNotes", function(){
+    $(document).on("click", "#makeNotes", function () {
         console.log($(this).attr("data-id"))
         $("#saveNote").attr("data-id", $(this).attr("data-id"))
     });
 
     // To Save Note
-    $(document).on("click", "#saveNote", function(){
+    $(document).on("click", "#saveNote", function () {
         let thisId = $(this).attr("data-id");
         console.log($(this).attr("data-id"))
         let note = {
@@ -40,7 +40,7 @@ $(document).ready(function () {
             method: "POST",
             url: "/note/" + thisId,
             data: note,
-        }).then(()=>{
+        }).then(() => {
             $("textarea").val("")
             $("input").val("")
         })
@@ -54,10 +54,12 @@ $(document).ready(function () {
             method: "GET",
             url: "/note/" + thisId,
             success: function (data) {
-           console.log('client note  data', data)
-          // $('#seeNoteModal').modal('show')
-           //$('#noteTitle').val(data.title)
-           //$('#noteBody').val(data.body);
+                console.log('client note  data', data)
+                console.log("title" + data.note.title)
+                console.log("body" + data.note.body)
+                $('#seeNoteModal').modal('show')
+                $('#noteTitle').val(data.note.title)
+                $('#noteBody').val(data.note.body);
             }
         })
     });

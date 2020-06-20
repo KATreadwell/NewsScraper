@@ -13,7 +13,10 @@ h5{
 }
 
 .nav-item{
-  font-weight: bolder;
+  color: white;
+}
+
+#saveArticle{
   color: white;
 }
 
