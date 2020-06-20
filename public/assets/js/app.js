@@ -46,6 +46,23 @@ $(document).ready(function () {
         })
     })
 
+    // to read Note
+    $(document).on("click", "#readNotes", function () {
+        let thisId = $(this).attr("data-id");
+
+        $.ajax({
+            method: "GET",
+            url: "/note/" + thisId,
+            success: function (data) {
+           console.log('client note  data', data)
+          // $('#seeNoteModal').modal('show')
+           //$('#noteTitle').val(data.title)
+           //$('#noteBody').val(data.body);
+            }
+        })
+    });
+
+
     // To Save Article
     $(document).on("click", "#saveArticle", function () {
         let thisId = $(this).attr("data-id");

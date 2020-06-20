@@ -12,8 +12,60 @@
           {{summary}}
         </div>
         <div class="card-footer">
-          <a class="btn btn-secondary save" id="readNotes" data-id="{{_id}}">Read Notes</a>
-          <a class="btn btn-primary save" id="makeNotes" data-id="{{_id}}">Make Notes</a>
+          <button type="button" class="btn btn-secondary save" id="readNotes" data-id="{{_id}}">Read Notes</button>
+          <div class="modal fade" id="seeNoteModal" tabindex="-1" role="dialog" aria-labelledby="noteModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="noteModalLabel">Title</h5>
+                  <input class="form-control noteTitle" id="noteTitle"></input>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <h6 class="modal-title" id="noteModalLabel">Subject</h6>
+                  <textarea class="form-control noteBody" id="noteBody"></textarea>
+                  {{#each Note }}
+                  {{ body }}
+                  {{/each}}
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" id="saveNote" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-primary" id="makeNotes" data-target="#seeNoteModal" data-toggle="modal"
+            data-id="{{_id}}">Make Notes</button>
+          <div class="modal fade" id="seeNoteModal" tabindex="-1" role="dialog" aria-labelledby="noteModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="noteModalLabel">Title</h5>
+                  <input class="form-control noteTitle"></input>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <h6 class="modal-title" id="noteModalLabel">Subject</h6>
+                  <textarea class="form-control noteBody"></textarea>
+                  {{#each Note }}
+                  {{ body }}
+                  {{/each}}
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" id="saveNote" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         {{/each}}
       </ul>

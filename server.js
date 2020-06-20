@@ -67,7 +67,7 @@ app.get("/scrape", function (req, res) {
 
 //Homepage
 app.get("/", function (req, res) {
-  db.Article.find({})
+  db.Article.find({saved: false})
     .then(function (dbArticles) {
 
       res.render("index", {
@@ -108,18 +108,18 @@ app.get("/savedArticles", function (req, res) {
 });
 
 //Saved Articles with their notes
-app.get("/savedArticles", function (req, res) {
-  db.Article.findOne({_id: req.params.id}, {saved: true })
-  .populate("note")
-    .then(function (dbArticles) {
-      res.render("saved-articles", {
-        Articles: dbArticles,
-      })
-    })
-    .catch(function (err) {
-      res.json(err);
-    });
-});
+// app.get("/savedArticles", function (req, res) {
+//   db.Article.findOne({_id: req.params.id}, {saved: true })
+//   .populate("note")
+//     .then(function (dbArticles) {
+//       res.render("saved-articles", {
+//         Articles: dbArticles,
+//       })
+//     })
+//     .catch(function (err) {
+//       res.json(err);
+//     });
+// });
 
 //to save articles 
 app.post("/savedArticles/:id", function(req, res) {
@@ -135,14 +135,34 @@ app.post("/savedArticles/:id", function(req, res) {
     });
 });
 
+//to read notes
+app.get("/note/:id", function(req, res){
+  console.log('request params', req.params)
+  db.Article.create(req.body)
+  .then(function(dbNote) {
+    return db.Article
+    .findOne({_id: req.params.id}, {note: dbNote._id});
+  })
+  .then(function(dbArticle){
+    console.log('read note for client', dbArticle);
+    res.json(dbArticle);
+
+  })
+  .catch(function(err){
+    res.json(err);
+  });
+});
+
+
 //to make notes
 app.post("/note/:id", function(req, res){
   console.log(req.body)
   db.Note.create(req.body)
   .then(function(dbNote) {
-    return db.Article.findOneAndUpdate({_id: req.params.id}, {note: dbNote._id}, {new: true});
+    return db.Article.findOne({_id: req.params.id}, {note: dbNote._id});
   })
   .then(function(dbArticle){
+    console.log('article data',dbArticle)
     res.json(dbArticle);
   })
   .catch(function(err){
